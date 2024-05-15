@@ -1,5 +1,5 @@
 import React from "react";
-
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 function CurrentLocationMap () {
     const [lat,set_lat] = React.useState(0)
@@ -90,18 +90,37 @@ function CurrentLocationMap () {
 
     return (
         <div>
-            <div>
-                <h3>Latitude: {lat}</h3>
-                <h3>Longitude: {lon}</h3>
-                <h3>Accuracy: {accuracy}</h3>
-                <h3>Date: {timestamp == 0 ? "" : new Date(timestamp).toLocaleString()}</h3>
-            </div>
+            {lat !== 0 && lon !== 0 && 
+                <div>
+                    <h3>Latitude: {lat}</h3>
+                    <h3>Longitude: {lon}</h3>
+                    <h3>Accuracy: {accuracy}</h3>
+                    <h3>Date: {timestamp == 0 ? "" : new Date(timestamp).toLocaleString()}</h3>
+                </div>
+            }
             <div>
                 <h3>Distance to target: {distance_to_target}km</h3>
             </div>
             <div>
                 <h4>Req count: {reqCount}</h4>
             </div>
+
+            {lat !== 0 && lon !== 0 && 
+                <div style={{width:"100%", textAlign:"-webkit-center", marginTop:"50px"}}>
+                    <MapContainer style={{height:"50vh",width:"60vw"}} center={[lat, lon]} zoom={13} scrollWheelZoom={false}>
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Marker position={[lat, lon]}>
+                        <Popup>
+                        A pretty CSS3 popup. <br /> Easily customizable.
+                        </Popup>
+                    </Marker>
+                    </MapContainer>
+                </div>
+            }
+
         </div>
 
     )
